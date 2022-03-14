@@ -1,0 +1,15 @@
+ggplot2
+scales
+dplyr
+tidyverse
+tibble
+tidyr
+readr
+purrr
+stringr
+forcats
+bigrquery
+cowplot
+knitr
+gridExtra
+DBI

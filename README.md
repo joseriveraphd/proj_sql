@@ -302,7 +302,7 @@ ggplot(data=respTimeCat_short %>% filter(year==2021),
 ![](sql_code_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 Note that the first four categories have resolution times less than 1
-day. The resolution times for the first four categories plotted above
+hour. The resolution times for the first four categories plotted above
 are 1.8, 2.7, 3.0, and 8.6 minutes.
 
 # Mobile, phone, and other sources of 3-1-1 requests

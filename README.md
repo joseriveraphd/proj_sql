@@ -13,9 +13,9 @@ knitr, grid, and DBI for authenticating the connection to BigQuery.
 # What are the top 10 reasons people call 3-1-1 in San Francisco?
 
 Let’s explore the top 10 complaints from people who called 3-1-1. We’ll
-write the query so that we can specify the year and rank categories
-based on how many how many complaints were received. Furthermore, the
-query can tell us whether two category ranks are equal (tied) since we
+write the query so that we can specify the year and rank each category
+based on how many complaints were received. Furthermore, the
+query can potentially tell us whether two category ranks are equal (tied), since we
 avoid use of the LIMIT function.
 
 For the purposes of exploration we’ll take a look at the top 10
@@ -84,7 +84,7 @@ plot_grid (plot_top10catPerYear(2020),
 # Year-on-year growth of top 6 complaint categories
 
 The top 6 categories in number of complaints has remained consistent
-from 2020 to 2021. Are these categories improving at all? What is the
+from 2020 to 2021. Are these complaints decreasing or increasing on a year-over-year basis? What is the
 year-over-year growth for these top 6 categories?
 
 ``` sql
@@ -140,6 +140,8 @@ ggplot(data=df_top6catYoY, mapping = aes(x=category, y=yoygrowth_2020to2021))+
 
 ![](sql_code_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
+As can be seen in the plot above, the number of complaints related to encampments, public works, and illegal postings decreased from 2020 to 2021 and graffiti, parking enforcement, and street and sidewalk complaints increased.
+
 # Response time for most popular category
 
 The “Street and sidewalk cleanings” category is consistently in the top
@@ -166,17 +168,16 @@ FROM cte_respTime
 ``` r
 knitr::kable(avg_respTime_topCat/1440, col.names = c("2019", "2020", "2021"), caption="Average response times by year", format="markdown") #Response time is in minutes. Divided by 1440 to get response time in number of days.
 ```
+Table 1: Average response times (in days) for Street and Sidewalk Cleaning by year
 
 |     2019 |     2020 |     2021 |
 |---------:|---------:|---------:|
-| 4.745264 | 3.046477 | 2.382411 |
+| 4.7 | 3.0 | 2.4 |
 
-Average response times by year
-
-The resolution times range from 2 to 4 days. Difficulties in updating
+The resolution times range from 2 to 4 days. <b>Difficulties in data collection and updating
 resolution times are mentioned in the SF 311 documentation, which might
 be why these resolution times are so long. We must be careful in how we
-interpret this data.
+interpret this data.</b>
 
 # Average number of daily calls for most popular category (Street and Sidewalk Cleaning)
 
@@ -207,18 +208,15 @@ FROM cte_avgdailycalls
 knitr::kable(avg_dailyPerYear, col.names = c("2019", "2020", "2021"), caption="Average daily calls per year", format="markdown")
 ```
 
+Table 2: Average number of daily calls per year for Street and Sidewalk Cleaning
+
 |    2019 |     2020 |     2021 |
 |--------:|---------:|---------:|
-| 678.589 | 760.8142 | 763.7863 |
+| 678.6 | 760.8 | 763.8 |
 
-Average daily calls per year
 
-``` r
-#Avg number of daily calls per year.
-```
-
-It looks like the average number of calls per day for ‘Street and
-Sidewalk Cleaning’ has increased from 2019 to 2021, with a slower
+The average number of calls per day for ‘Street and
+Sidewalk Cleaning’ has increased from 2019 to 2021, with a smaller
 increase from 2020 to 2021.
 
 # Response time per complaint category
@@ -262,6 +260,8 @@ ggplot(data=respTimeCat_long %>% filter(year==2021),
     coord_flip() 
 ```
 
+<p align="center"> <font size="12"><b> Complaints with longest resolution times in 2021</p></b></font>
+
 ![](sql_code_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 What’s the shortest response times per issue/category in 2021?
@@ -299,10 +299,12 @@ ggplot(data=respTimeCat_short %>% filter(year==2021),
     theme(legend.title=element_blank()) 
 ```
 
+<p align="center"> <font size="12"><b> Complaints with shortest resolution times in 2021</p></b></font>
+
 ![](sql_code_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
-Note that the first four categories have resolution times less than 1
-hour. The resolution times for the first four categories plotted above
+Note that the first four complaints in the graph have the shortest resolution times, which are less than 1
+day. The resolution times for the first four categories plotted above
 are 1.8, 2.7, 3.0, and 8.6 minutes.
 
 # Mobile, phone, and other sources of 3-1-1 requests
@@ -333,6 +335,8 @@ ggplot(data=df_sourcePerYear, aes(x=year, y=n, fill=source)) +
   ylab('Total number of calls') 
 ```
 
-![](sql_code_files/figure-gfm/unnamed-chunk-14-1.png)<!-- --> From the
+![](sql_code_files/figure-gfm/unnamed-chunk-14-1.png)<!-- --> 
+
+From the
 graph above, Mobile/Open311 consistently serves as the largest source of
 311 calls from 2019-2021.
